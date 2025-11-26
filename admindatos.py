@@ -13,7 +13,7 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
         return objetos
     @staticmethod
     def mostrar(lista): #este metodo es mas que nada para comprobar si el programa funcionaba
-        for obj in lista:
+        for obj in lista[:5]:
             print(f"ID: {obj.item_id}")
             print(f"Nombre: {obj.item_name}")
             print(f"Categoría: {obj.category}")
