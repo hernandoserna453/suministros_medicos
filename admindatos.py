@@ -27,3 +27,13 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
             print(f"Proveedor: {obj.supplier}")
             print(f"Estado: {obj.status}")
             print("-" * 40)
+    def stockpor(lista,parametro): #muestra el stock dependiendo del parametro que haya elegido el cliente
+
+        stock={} #se guarda en este diccionario
+        for lis in lista:
+            clave=getattr(lis,parametro) #en el main se debe hacer un menú que llame el metodo 'parametro' debe ser un string identico al nombre del atributo del objeto
+            if clave in stock: #si el parametro no esta en la lista se crea info en el diccionario, si ya existe solo se suma.abs
+                stock[clave]+=int(lis.current_stock) if lis.current_stock.strip() != "" else 0
+            else:
+                stock[clave]=int(lis.current_stock) if lis.current_stock.strip() != "" else 0
+        return stock
