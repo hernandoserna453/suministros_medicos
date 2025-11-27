@@ -1,6 +1,6 @@
 import csv
 from lotes import Lotes
-from datetime import datetime
+from datetime import datetime, timedelta, date
 class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe debe agregar el metodo que borra los objetos que tengan fechas vacias
   
     @staticmethod
@@ -28,6 +28,23 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
             print(f"Proveedor: {obj.supplier}")
             print(f"Estado: {obj.status}")
             print("-" * 40)
+
+    def alerta_vencimiento_stock(self, dias_alerta: int) -> str:
+        try:
+            fecha_vencimiento = datetime.strptime(self.expiry_date, '%d-%m-%Y').date() #convierte la cadena self.expiry_date a date
+        except ValueError:
+            return f" ERROR en Lote {self.batch_code}: Formato de fecha incorrecto ({self.expiry_date})."
+        
+        fecha_actual = date.today()
+        
+        diferencia_tiempo = fecha_vencimiento - fecha_actual   #calcular los días restantes
+        dias_restantes = diferencia_tiempo.days
+            
+        if dias_restantes <= dias_alerta:
+            return f" ALERTA: Lote {self.batch_code} ({self.item_name}) vence en {dias_restantes} días. Stock: {self.current_stock}."   #vencimiento próximo
+            
+        else:
+            return f" OK: Lote {self.batch_code} tiene vigencia suficiente."   #vigencia suficiente
     def stockpor(lista,parametro): #muestra el stock dependiendo del parametro que haya elegido el cliente
 
         stock={} #se guarda en este diccionario
