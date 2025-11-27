@@ -19,7 +19,53 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
             print(f"Proveedor: {obj.supplier}")
             print(f"Estado: {obj.status}")
             print("-" * 40)
-    
+    @staticmethod
+    def especifico_lote(lista, batch_code=None):
+        if not lista:
+            print("no hay lotes que buscar")
+            return []
+        if batch_code:
+
+            resultado = []
+            batch_code_lower = batch_code.lower().strip()
+            for  lote in lista:
+                lote_batch_code = str(lote.batch_code).lower() if lote.batch_code else ""
+                if batch_code_lower in lote_batch_code:
+                    resultado.append(lote)
+            if resultado:
+              print(f"se encontraron {len(resultado)} informacion,del lote { batch_code}: ")
+              AdminDatos.mostrar(resultado)
+
+              print(f"todos los lotes {len(resultado)} lotes encontrados")
+            else:
+              print(f"no se encotraron lotes : {batch_code}")
+            return []
+        else:
+         print(f"se encontraron lotes: {len(lista)}")
+         AdminDatos.mostrar(lista)
+         print(f"se muestra todo los {len(lista)} lotes en total:")
+         return lista
+    @staticmethod  
+    def busca_lote(self):
+        print("datos por:Todos los datos/ especifico")
+
+        if not self.lote:
+            print("mostrar todos los datos")
+            print("buscar lote espefico")
+
+        opcion = input("seleccione 1 -2")
+        if opcion:
+            if opcion  == "1":
+                AdminDatos.mostrar(self.lote)
+            elif opcion == "2":
+                batch_code = input(f"ingrese el lute a buscar:").strip()
+                if not batch_code:
+                    print("ingrese un lote correcto")
+                    return
+                AdminDatos.mostrar(self.lote, batch_code)
+            else:
+                print("opcion no valida")
+
     @staticmethod
     def eliminar_fechas_vacias(lista):
         
@@ -72,21 +118,3 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
                 obj=Lotes(**fila) #El **fila automatiza los atributos para llamar la clase
                 objetos.append(obj) #acá se añade el objeto a la lista
         return objetos
-    @staticmethod
-    def mostrar(lista): #este metodo es mas que nada para comprobar si el programa funcionaba
-        for obj in lista:
-            print(f"ID: {obj.item_id}")
-            print(f"Nombre: {obj.item_name}")
-            print(f"Categoría: {obj.category}")
-            print(f"Lote: {obj.batch_code}")
-            print(f"Recibido: {obj.received_date}")
-            print(f"Expira: {obj.expiry_date}")
-            print(f"Área: {obj.warehouse_area}")
-            print(f"Stock actual: {obj.current_stock}")
-            print(f"Stock mínimo: {obj.min_stock}")
-            print(f"Costo unitario: {obj.unit_cost}")
-            print(f"Proveedor: {obj.supplier}")
-            print(f"Estado: {obj.status}")
-            print("-" * 40)
-
-ruta = r"C:\Users\Aprendiz\Desktop\luis\suministros_medicos"
