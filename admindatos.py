@@ -20,13 +20,14 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
             print(f"Estado: {obj.status}")
             print("-" * 40)
     @staticmethod
-    def especifico_lote(lista, batch_code=None): # FUNCION LOTE
+    def especifico_lote(lista, batch_code=None): # FUNCION LOTES
         if not lista:
             print("no hay lotes que buscar")
             return []
         if batch_code:
             # ESPECIFICAR LOTE
             resultado = []
+
             batch_code_lower = batch_code.lower().strip()
             for  lote in lista:
                 lote_batch_code = str(lote.batch_code).lower() if lote.batch_code else ""
