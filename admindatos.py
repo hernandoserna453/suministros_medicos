@@ -1,6 +1,7 @@
 import csv
 from lotes import Lotes
 from datetime import datetime, timedelta, date
+
 class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe debe agregar el metodo que borra los objetos que tengan fechas vacias
   
     @staticmethod
@@ -29,22 +30,23 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
             print(f"Estado: {obj.status}")
             print("-" * 40)
 
-    def alerta_vencimiento_stock(self, dias_alerta: int) -> str:
-        try:
-            fecha_vencimiento = datetime.strptime(self.expiry_date, '%d-%m-%Y').date() #convierte la cadena self.expiry_date a date
-        except ValueError:
-            return f" ERROR en Lote {self.batch_code}: Formato de fecha incorrecto ({self.expiry_date})."
-        
-        fecha_actual = date.today()
-        
-        diferencia_tiempo = fecha_vencimiento - fecha_actual   #calcular los días restantes
-        dias_restantes = diferencia_tiempo.days
-            
-        if dias_restantes <= dias_alerta:
-            return f" ALERTA: Lote {self.batch_code} ({self.item_name}) vence en {dias_restantes} días. Stock: {self.current_stock}."   #vencimiento próximo
-            
-        else:
-            return f" OK: Lote {self.batch_code} tiene vigencia suficiente."   #vigencia suficiente
+    def alerta_vencimiento_stock(lista): #muestra los lotes que van a vencer en los proximos 30 dias
+        hoy = date.today()
+        fecha_limite = hoy + timedelta(days=30)
+        lotes_vencidos = []
+
+        for lote in lista:
+            if lote.expiry_date and lote.expiry_date.strip() != "":
+                try:
+                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y-%m-%d").date()
+                    if hoy <= fecha_expiracion <= fecha_limite:
+                        lotes_vencidos.append(lote)
+                except ValueError:
+                    print(f"Formato de fecha inválido para el lote {lote.batch_code}: {lote.expiry_date}")
+
+        return lotes_vencidos
+
+    
     def stockpor(lista,parametro): #muestra el stock dependiendo del parametro que haya elegido el cliente
 
         stock={} #se guarda en este diccionario

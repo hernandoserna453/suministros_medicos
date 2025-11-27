@@ -15,9 +15,9 @@ opcion_principal = int(input("Selecciona la opcion principal:"))
         print("e. Stock por categoria")
         print("f. Stock por bodega")
 
-        opcion_stock str(input("Elige una opcion por stock:"))
+        opcion_stock = str(input("Elige una opcion por stock:"))
         if opcion_stock == 'a':
-            elif opcion_stock == 'b':
+            if opcion_stock == 'b':
             elif opcion_stock == 'c':
             elif opcion_stock == 'd':
             elif opcion_stock == 'e':
