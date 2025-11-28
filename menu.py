@@ -32,6 +32,6 @@ elif opcion_principal == '2':
     listaven=AdminDatos.alerta_vencimiento_stock(lista)
     print("Los siguientes lotes estan vencidos: ",listaven)
 elif opcion_principal == '3':
-    AdminDatos.busca_lote(lista)
+    AdminDatos.busca_lote(lista)    
 else:
     print("Opcion invalida")
