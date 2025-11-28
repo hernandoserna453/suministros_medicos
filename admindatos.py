@@ -23,8 +23,8 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
         for lote in lista:
             if lote.expiry_date and lote.expiry_date.strip() != "":
                 try:
-                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y/%m/%d").date()
-                    if fecha_expiracion<hoy:
+                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y/%m/%d").date() #el formato de fecha estaba mal, se corrigió con /
+                    if fecha_expiracion<hoy: #aca compara con la fecha hoy, las fechas menores estan vencidas
                         lotes_vencidos.append(lote.batch_code)
                 except ValueError:
                     print(f"Formato de fecha inválido para el lote {lote.batch_code}: {lote.expiry_date}")
