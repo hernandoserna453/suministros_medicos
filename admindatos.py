@@ -14,22 +14,7 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
                 objetos.append(obj) #acá se añade el objeto a la lista
         return objetos
     @staticmethod
-    def mostrar(lista): #este metodo es mas que nada para comprobar si el programa funcionaba
-        for obj in lista[:5]:
-            print(f"ID: {obj.item_id}")
-            print(f"Nombre: {obj.item_name}")
-            print(f"Categoría: {obj.category}")
-            print(f"Lote: {obj.batch_code}")
-            print(f"Recibido: {obj.received_date}")
-            print(f"Expira: {obj.expiry_date}")
-            print(f"Área: {obj.warehouse_area}")
-            print(f"Stock actual: {obj.current_stock}")
-            print(f"Stock mínimo: {obj.min_stock}")
-            print(f"Costo unitario: {obj.unit_cost}")
-            print(f"Proveedor: {obj.supplier}")
-            print(f"Estado: {obj.status}")
-            print("-" * 40)
-
+    
     def alerta_vencimiento_stock(lista): #muestra los lotes que van a vencer en los proximos 30 dias
         hoy = date.today()
         fecha_limite = hoy + timedelta(days=30)
@@ -38,9 +23,9 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
         for lote in lista:
             if lote.expiry_date and lote.expiry_date.strip() != "":
                 try:
-                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y-%m-%d").date()
-                    if hoy <= fecha_expiracion <= fecha_limite:
-                        lotes_vencidos.append(lote)
+                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y/%m/%d").date()
+                    if fecha_expiracion<hoy:
+                        lotes_vencidos.append(lote.batch_code)
                 except ValueError:
                     print(f"Formato de fecha inválido para el lote {lote.batch_code}: {lote.expiry_date}")
 
@@ -102,12 +87,11 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
 
         # Sub menú para elegir si mostrar todo o solamente un lote específico
         opcion = input("Seleccione 1 para mostrar todos los lotes o 2 para buscar un lote específico: ")
-
         if opcion:
             if opcion == "1":
                 AdminDatos.mostrar(lista)
             elif opcion == "2":
-                batch_code = input("Ingrese el lote a buscar: ").strip()
+                batch_code ="Lote-"+ input("Ingrese el lote a buscar: ").strip()
                 if not batch_code:
                     print("Ingrese un lote correcto")
                     return
