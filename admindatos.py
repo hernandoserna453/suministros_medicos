@@ -179,17 +179,3 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
         eliminados = inicial - len(lista_filtrada)
         print(f"✅ Se eliminaron {eliminados} registros completamente vacíos/inválidos")
         return lista_filtrada, eliminados  
-    
-   
-    @staticmethod
-    def leer_csv(ruta): #Esto es para leer el archivio csv y transformamrlo en una lista de objetos Lotes
-        objetos = []
-        with open(ruta,encoding='utf-8') as f:
-            lector = csv.DictReader(f)
-            for fila in lector:
-                obj=Lotes(**fila) #El **fila automatiza los atributos para llamar la clase
-                objetos.append(obj) #acá se añade el objeto a la lista
-        return objetos
-
-
-

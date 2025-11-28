@@ -1,6 +1,5 @@
 from admindatos import AdminDatos
 lista=AdminDatos.leer_csv("dataset3_clinical_supplies_inventory.csv")
-
 print("Elige una opcion para gestionar los suministro:")
 print("1. Buscar por stock:")
 print("2. Alerta de stock por vencer")
@@ -32,6 +31,7 @@ if opcion_principal == '1':
 elif opcion_principal == '2':
     pass
 elif opcion_principal == '3':
-    pass
+    AdminDatos.especifico_lote(lista)
+    AdminDatos.busca_lote()
 else:
     print("Opcion invalida")
