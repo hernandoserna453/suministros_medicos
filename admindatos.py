@@ -136,7 +136,7 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
         #datos eliminados
         eliminados = inicial - len(lista_filtrada)
         print(f"Se eliminaron {eliminados} registros con fechas vacías")
-        return lista_filtrada, eliminados
+        return lista_filtrada
     
     @staticmethod
     #se elimina todos los vacios de todo el archivo
