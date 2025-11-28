@@ -16,20 +16,20 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
     @staticmethod
     
     def alerta_vencimiento_stock(lista): #muestra los lotes que van a vencer en los proximos 30 dias
-        hoy = date.today()
-        fecha_limite = hoy + timedelta(days=30)
-        lotes_vencidos = []
+        hoy = date.today() #asigna la fecha actual a la variable
+        fecha_limite = hoy + timedelta(days=30) #establece lapso para la alerta
+        lotes_vencidos = [] #lista que contiene los lotes vencidos
 
-        for lote in lista:
-            if lote.expiry_date and lote.expiry_date.strip() != "":
+        for lote in lista: #recorre los lotes en la lista
+            if lote.expiry_date and lote.expiry_date.strip() != "": #verifica que el campo no este vacio
                 try:
-                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y/%m/%d").date() #el formato de fecha estaba mal, se corrigió con /
+                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y/%m/%d").date() #extrae la fecha de los objetos
                     if fecha_expiracion<hoy: #aca compara con la fecha hoy, las fechas menores estan vencidas
-                        lotes_vencidos.append(lote.batch_code)
+                        lotes_vencidos.append(lote.batch_code) #agrega los lotes a la lista
                 except ValueError:
-                    print(f"Formato de fecha inválido para el lote {lote.batch_code}: {lote.expiry_date}")
+                    print(f"Formato de fecha inválido para el lote {lote.batch_code}: {lote.expiry_date}") #mensaje de error por formato incoherente
 
-        return lotes_vencidos
+        return lotes_vencidos #retorna la lista con los resultados
 
     
     def stockpor(lista,parametro): #muestra el stock dependiendo del parametro que haya elegido el cliente
