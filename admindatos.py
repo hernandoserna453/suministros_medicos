@@ -1,6 +1,7 @@
 import csv
 from lotes import Lotes
 from datetime import datetime, timedelta, date
+
 class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe debe agregar el metodo que borra los objetos que tengan fechas vacias
   
     @staticmethod
@@ -29,22 +30,23 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
             print(f"Estado: {obj.status}")
             print("-" * 40)
 
-    def alerta_vencimiento_stock(self, dias_alerta: int) -> str:
-        try:
-            fecha_vencimiento = datetime.strptime(self.expiry_date, '%d-%m-%Y').date() #convierte la cadena self.expiry_date a date
-        except ValueError:
-            return f" ERROR en Lote {self.batch_code}: Formato de fecha incorrecto ({self.expiry_date})."
-        
-        fecha_actual = date.today()
-        
-        diferencia_tiempo = fecha_vencimiento - fecha_actual   #calcular los días restantes
-        dias_restantes = diferencia_tiempo.days
-            
-        if dias_restantes <= dias_alerta:
-            return f" ALERTA: Lote {self.batch_code} ({self.item_name}) vence en {dias_restantes} días. Stock: {self.current_stock}."   #vencimiento próximo
-            
-        else:
-            return f" OK: Lote {self.batch_code} tiene vigencia suficiente."   #vigencia suficiente
+    def alerta_vencimiento_stock(lista): #muestra los lotes que van a vencer en los proximos 30 dias
+        hoy = date.today()
+        fecha_limite = hoy + timedelta(days=30)
+        lotes_vencidos = []
+
+        for lote in lista:
+            if lote.expiry_date and lote.expiry_date.strip() != "":
+                try:
+                    fecha_expiracion = datetime.strptime(lote.expiry_date, "%Y-%m-%d").date()
+                    if hoy <= fecha_expiracion <= fecha_limite:
+                        lotes_vencidos.append(lote)
+                except ValueError:
+                    print(f"Formato de fecha inválido para el lote {lote.batch_code}: {lote.expiry_date}")
+
+        return lotes_vencidos
+
+    
     def stockpor(lista,parametro): #muestra el stock dependiendo del parametro que haya elegido el cliente
 
         stock={} #se guarda en este diccionario
@@ -88,30 +90,49 @@ class AdminDatos: #admindatos es para modificar o mostrar datos, aqui Felipe deb
          AdminDatos.mostrar(lista)
          print(f"se muestra todo los {len(lista)} lotes en total:")
          return lista
+   
     @staticmethod  
-    def busca_lote(self): #Funcion encarga de buscar por bach_code
-        print("datos por:Todos los datos/ especifico")
-        #condicion cumplida
+    def busca_lote(lista):  # Función encargada de buscar por batch_code
+        print("Datos por: Todos los datos / específico")
+        
+        # Verifica si la lista de lotes está vacía
+        if not lista:
+            print("Mostrar todos los datos")
+            return  # Salimos si no hay lotes disponibles
 
-        if not self.lote:
-            print("mostrar todos los datos")
-            print("buscar lote espefico")
-
-        #sub menu para elegir si mostrar todo o solamente un lote especifico
-
-        opcion = input("seleccione 1 -2")
+        # Sub menú para elegir si mostrar todo o solamente un lote específico
+        opcion = input("Seleccione 1 para mostrar todos los lotes o 2 para buscar un lote específico: ")
 
         if opcion:
-            if opcion  == "1":
-                AdminDatos.mostrar(self.lote)
+            if opcion == "1":
+                AdminDatos.mostrar(lista)
             elif opcion == "2":
-                batch_code = input(f"ingrese el lute a buscar:").strip()
+                batch_code = input("Ingrese el lote a buscar: ").strip()
                 if not batch_code:
-                    print("ingrese un lote correcto")
+                    print("Ingrese un lote correcto")
                     return
-                AdminDatos.mostrar(self.lote, batch_code)
+                AdminDatos.mostrar(lista, batch_code)
             else:
-                print("opcion no valida")
+                print("Opción no válida")
+
+    @staticmethod
+    def mostrar(lotes, batch_code=None):
+        for obj in lotes:
+            if batch_code is None or obj.batch_code == batch_code:
+                print(f"ID: {obj.item_id}")
+                print(f"Nombre: {obj.item_name}")
+                print(f"Categoría: {obj.category}")
+                print(f"Lote: {obj.batch_code}")
+                print(f"Recibido: {obj.received_date}")
+                print(f"Expira: {obj.expiry_date}")
+                print(f"Área: {obj.warehouse_area}")
+                print(f"Stock actual: {obj.current_stock}")
+                print(f"Stock mínimo: {obj.min_stock}")
+                print(f"Costo unitario: {obj.unit_cost}")
+                print(f"Proveedor: {obj.supplier}")
+                print(f"Estado: {obj.status}")
+                print("-" * 40)
+
 
     @staticmethod
     def eliminar_fechas_vacias(lista):
